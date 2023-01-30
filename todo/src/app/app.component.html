@@ -1,0 +1,30 @@
+<div class="todo-container">
+  <div class="todo-header">
+    <span>Todo App</span>
+  </div>
+
+  <div class="todo-new-item-container">
+    <input 
+      type="text" 
+      [(ngModel)]="newItem.value"
+      placeholder="Add your new todo">
+    
+    <div class="create-new-item-button">
+      <span>+</span>
+    </div>
+  </div>
+
+  <div class="todo-items-container">
+    <div 
+      class="todo-item"
+      *ngFor="let item of items">
+      <span>{{item.value}}</span>
+
+      <div class="delete-item-button">
+        X
+      </div>
+    </div>
+  </div>
+
+  <div class="todo-footer"></div>
+</div>
