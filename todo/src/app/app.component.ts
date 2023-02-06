@@ -28,7 +28,10 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.items = this.AppService.getItems();
+    this.AppService.getItems()
+      .subscribe((response: any) => {
+        this.items = response.items;
+      });
   }
 
   onCreateItemClick(item: IItem) {
@@ -36,10 +39,15 @@ export class AppComponent implements OnInit {
       return ;
     }
 
-    this.items.splice(0, 0, {...item, id: `id${this.items.length}`});
+    const newItem = {...item, id: `id${this.items.length + 1}`};
 
-    this.newItem.value = "";
-    this.newItem.id = "";
+    this.AppService.createItem(newItem)
+      .subscribe(() => {
+        this.items.push(newItem);
+
+        this.newItem.value = "";
+        this.newItem.id = "";
+      });
   }
 
   onItemDeleteClick(index: number) {

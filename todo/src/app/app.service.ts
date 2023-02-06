@@ -1,20 +1,25 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
-  createItem() {}
+  constructor(
+    private http: HttpClient
+  ) {
+
+  }
+
+  createItem(item: any) {
+    return this.http.post("http://localhost:4100/item", { item });
+  }
 
   deleteItem() {}
 
   checkItem() {}
 
   getItems() {
-    return [
-      { id: "id1", value: "first item", checked: false },
-      { id: "id2", value: "second item", checked: false },
-      { id: "id3", value: "third item", checked: false },
-    ];
+    return this.http.get("http://localhost:4100/items");
   }
 }
