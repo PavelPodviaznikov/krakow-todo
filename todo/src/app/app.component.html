@@ -7,21 +7,22 @@
     <input 
       type="text" 
       [(ngModel)]="newItem.value"
-      placeholder="Add your new todo">
+      placeholder="Add your new todo"
+      (keyup.enter)="onCreateItemClick(newItem)">
     
-    <div class="create-new-item-button">
-      <span>+</span>
+    <div class="create-new-item-button" (click)="onCreateItemClick(newItem)">
+      <mat-icon>add</mat-icon>
     </div>
   </div>
 
   <div class="todo-items-container">
     <div 
       class="todo-item"
-      *ngFor="let item of items">
+      *ngFor="let item of items; index as i;">
       <span>{{item.value}}</span>
 
-      <div class="delete-item-button">
-        X
+      <div class="delete-item-button" (click)="onItemDeleteClick(i)">
+        <mat-icon>delete_outline</mat-icon>
       </div>
     </div>
   </div>
