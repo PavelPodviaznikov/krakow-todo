@@ -4,25 +4,44 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 4100;
 
-const items = [
-  { id: "id1", value: "first item", checked: false },
-  { id: "id2", value: "second item", checked: false },
-];
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+
+const serviceAccount = require('./krakow-todo-1eca0a59f74c.json');
+
+initializeApp({
+  credential: cert(serviceAccount)
+});
+
+const db = getFirestore();
 
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get('/items', (req, res) => {
+app.get('/items', async (req, res) => {
+  const snapshot = await db.collection('items').get();
+  const items = snapshot.docs.map(doc => doc.data());
+
   res.send({
     items
   });
 });
 
-app.post('/item', (req, res) => {
+app.post('/item', async (req, res) => {
   const item = req.body.item;
-  console.log({body: req.body});
 
-  items.push(item);
+  const itemsCollection = db.collection('items');
+  await itemsCollection.doc(item.id).set(item);
+
+  res.send({
+    status: "ok"
+  });
+});
+
+app.delete("/item/:itemId", async (req, res) => {
+  const itemId = req.params.itemId;
+
+  await db.collection('items').doc(itemId).delete();
 
   res.send({
     status: "ok"

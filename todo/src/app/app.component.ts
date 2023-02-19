@@ -39,7 +39,8 @@ export class AppComponent implements OnInit {
       return ;
     }
 
-    const newItem = {...item, id: `id${this.items.length + 1}`};
+    const timestamp = new Date().getTime();
+    const newItem = {...item, id: `id-${timestamp}`, createdAt: timestamp};
 
     this.AppService.createItem(newItem)
       .subscribe(() => {
@@ -51,6 +52,11 @@ export class AppComponent implements OnInit {
   }
 
   onItemDeleteClick(index: number) {
-    this.items.splice(index, 1);
+    const itemId = this.items[index].id;
+
+    this.AppService.deleteItem(itemId)
+      .subscribe((response: any) => {
+        this.items.splice(index, 1);
+      });
   }
 }

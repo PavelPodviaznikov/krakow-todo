@@ -15,7 +15,9 @@ export class AppService {
     return this.http.post("http://localhost:4100/item", { item });
   }
 
-  deleteItem() {}
+  deleteItem(itemId: string) {
+    return this.http.delete(`http://localhost:4100/item/${itemId}`);
+  }
 
   checkItem() {}
 
